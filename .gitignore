@@ -1,3 +1,5 @@
 .vscode
 *.html
 *.csv
+/source/core/__pycache__
+/source/strategies/__pycache__
