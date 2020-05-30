@@ -1,6 +1,5 @@
 from backtesting import Backtest, Strategy
 from backtesting.lib import crossover
-
 from backtesting.test import SMA, GOOG
 
 
@@ -15,9 +14,3 @@ class SmaCross(Strategy):
             self.buy()
         elif crossover(self.ma2, self.ma1):
             self.sell()
-
-if __name__ == '__main__':
-    bt = Backtest(GOOG,SmaCross,cash=10000, commission=.002)
-    print(GOOG)
-    bt.run()
-    #bt.plot()

@@ -1,23 +1,18 @@
+import argparse
 from backtesting import Backtest, Strategy
 from backtesting.lib import crossover
-
 from backtesting.test import SMA, GOOG
+from core.csvreader import BacktestingDataframe
+from strategies.strategy import *
 
+def main():
+    #parser = argparse.ArgumentParser(description='Backtesting process to evaluate the efficency of forex strategies.')
+    #Simulation.run();
+    AUDUSD = BacktestingDataframe("AUDUSD").get_dataframe()
+    print(AUDUSD)
+    bt = Backtest(AUDUSD,SmaCross,cash=10000, commission=.002)
+    bt.run()
+    bt.plot()
 
-class SmaCross(Strategy):
-    def init(self):
-        Close = self.data.Close
-        self.ma1 = self.I(SMA, Close, 10)
-        self.ma2 = self.I(SMA, Close, 20)
-
-    def next(self):
-        if crossover(self.ma1, self.ma2):
-            self.buy()
-        elif crossover(self.ma2, self.ma1):
-            self.sell()
-
-
-bt = Backtest(GOOG, SmaCross,
-              cash=10000, commission=.002)
-bt.run()
-bt.plot()
+if __name__ == '__main__':
+    main()

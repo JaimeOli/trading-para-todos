@@ -2,21 +2,38 @@ import pandas as pd
 from datetime import date, timedelta
 from pathlib import Path
 
-yesterday = date.today() - timedelta(days=1)
+class BacktestingDataframe:
+    #Se usa yesterady como valor por defecto si no se da una fecha
+    yesterday = date.today() - timedelta(days=1)
 
-def importcsvdata(divisa,date = yesterday,sep = ',',index = 0):
-    csvstring = convert_date_to_csvstring(divisa,date)
-    pathfile = add_default_data_path(csvstring)
-    return readcsv(pathfile,sep,index)
+    def __init__(self,divisa,date = yesterday,sep = ',',csv_filename = None):
+        if csv_filename is None:
+            self.dataframe = self.importcsvdata(divisa,date,sep)
+        else:
+            pass
+    
+    def get_dataframe(self):
+        return self.dataframe
 
-def convert_date_to_csvstring(divisa,date):
-    return date.strftime("{div}-%Y_%m_%d-%Y_%m_%d.csv").format(div = divisa)
+    def importcsvdata(self,divisa,date,sep):
+        def convert_date_to_csvstring(divisa,date):
+            return date.strftime("{div}-%Y_%m_%d-%Y_%m_%d.csv").format(div = divisa)
 
-def add_default_data_path(csvstring):
-    return "{home}/trading/trading-para-todos/data/{csv}".format(home = str(Path.home()), csv = csvstring)
+        def add_default_data_path(csvstring):
+            return "{home}/trading/trading-para-todos/data/{csv}".format(home = str(Path.home()), csv = csvstring)
 
-def readcsv(filename,sep,index):
-    return pd.read_csv(filename, sep= sep, index_col=index)
+        def readcsv(filename,sep):
+            return pd.read_csv(filename, sep= sep, index_col=['time'],parse_dates=True)
+
+        csvstring = convert_date_to_csvstring(divisa,date)
+        pathfile = add_default_data_path(csvstring)
+        dataframe = readcsv(pathfile,sep)
+        dataframe.rename(columns={'open':'Open','close':'Close','high':'High','low':'Low'},inplace=True)
+        print(dataframe.columns)
+        self.dataframe = dataframe
+        return dataframe
 
 if __name__ == '__main__':
-    print(importcsvdata("AUDUSD"))
+    data = BacktestingDataframe('AUDUSD').get_dataframe()
+    print(data[['Open']][:1])
+    print(data)
