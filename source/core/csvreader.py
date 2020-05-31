@@ -1,14 +1,21 @@
 import pandas as pd
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from pathlib import Path
 
 class BacktestingDataframe:
     #Se usa yesterady como valor por defecto si no se da una fecha
     yesterday = date.today() - timedelta(days=1)
 
-    def __init__(self,divisa,date = yesterday,sep = ',',csv_filename = None):
+    def __init__(self,divisa,paramdate = yesterday,sep = ',',csv_filename = None):
         if csv_filename is None:
-            self.dataframe = self.importcsvdata(divisa,date,sep)
+            if isinstance(paramdate,date):
+                self.dataframe = self.importcsvdata(divisa,paramdate,sep)
+            else:
+                try:
+                    paramdate = datetime.strptime(paramdate,"%d-%m-%Y")
+                    self.dataframe = self.importcsvdata(divisa,paramdate,sep)
+                except NameError:
+                    print(NameError)
         else:
             pass
     
