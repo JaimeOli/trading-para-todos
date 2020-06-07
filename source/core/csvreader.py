@@ -21,7 +21,7 @@ class BacktestingDataframe:
     
     def get_dataframe(self):
         return self.dataframe
-
+        
     def importcsvdata(self,divisa,date,sep):
         def convert_date_to_csvstring(divisa,date):
             return date.strftime("{div}-%Y_%m_%d-%Y_%m_%d.csv").format(div = divisa)
@@ -31,16 +31,20 @@ class BacktestingDataframe:
 
         def readcsv(filename,sep):
             return pd.read_csv(filename, sep= sep, index_col=['time'],parse_dates=True)
+        
+        def renamedukacsvcolumns(df):
+            return df.rename(columns={'open':'Open','close':'Close','high':'High','low':'Low'},inplace=True)
 
         csvstring = convert_date_to_csvstring(divisa,date)
         pathfile = add_default_data_path(csvstring)
         dataframe = readcsv(pathfile,sep)
-        dataframe.rename(columns={'open':'Open','close':'Close','high':'High','low':'Low'},inplace=True)
-        print(dataframe.columns)
-        self.dataframe = dataframe
+        renamedukacsvcolumns(dataframe)
         return dataframe
 
 if __name__ == '__main__':
     data = BacktestingDataframe('AUDUSD').get_dataframe()
+    print(data.describe())
+    print(data.dtypes)
+    print(data['Open'])
     print(data[['Open']][:1])
     print(data)
