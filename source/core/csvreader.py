@@ -17,7 +17,7 @@ class BacktestingDataframe:
                 except NameError:
                     print(NameError)
         else:
-            pass
+            self.dataframe = pd.read_csv(csv_filename, sep= sep, index_col=['time'],parse_dates=True)
     
     def get_dataframe(self):
         return self.dataframe
