@@ -2,7 +2,7 @@ from backtesting import Backtest
 from backtesting.lib import crossover, SignalStrategy, TrailingStrategy
 from backtesting.test import SMA
 
-class SmaCross(SignalStrategy,TrailingStrategy):
+class ThreeSma(SignalStrategy,TrailingStrategy):
     def init(self):
         Close = self.data.Close
         self.ma1 = self.I(SMA, Close, 10)
