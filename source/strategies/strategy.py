@@ -12,6 +12,7 @@ class ThreeSma(SignalStrategy,TrailingStrategy):
 
     def next(self):
         price = self.data.Close[-1]
+        date = self.data.index[-1]
         ma1 = self.ma1
         ma2 = self.ma2
         ma3 = self.ma3 
@@ -29,9 +30,9 @@ class ThreeSma(SignalStrategy,TrailingStrategy):
            ma2[-1] < ma3[-1]
            ):
             self.buy()
-            print('Compre a:' + str(price))
+            print(str(date) + ' Compre a:' + str(price))
         
-        if(ma2[-1] > ma1[-1]):
+        if(self.position and ma2[-1] > ma1[-1]):
             self.position.close()
 
         if(not self.position and
@@ -40,7 +41,7 @@ class ThreeSma(SignalStrategy,TrailingStrategy):
            ma2[-1] > ma3[-1]
            ):
             self.sell()
-            print('Vendi a:' + str(price))
+            print(str(date) + ' Vendi a:' + str(price))
         
-        if(ma2[-1] < ma1[-1]):
+        if(self.position and ma2[-1] < ma1[-1]):
             self.position.close()
