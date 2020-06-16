@@ -11,8 +11,8 @@ class ThreeSma(SignalStrategy,TrailingStrategy):
         self.diff = 0.0012
 
     def next(self):
-        price = self.data.Close[-1]
-        date = self.data.index[-1]
+        price = self.data.Close[-2]
+        date = self.data.index[-2]
         ma1 = self.ma1
         ma2 = self.ma2
         ma3 = self.ma3 
