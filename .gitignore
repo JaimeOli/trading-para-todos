@@ -1,6 +1,12 @@
+#Extensions
 .vscode
 *.html
 *.csv
 *.code-workspace
+#Routes
 /source/core/__pycache__
 /source/strategies/__pycache__
+#Exceptions
+!AUDUSD-2020_05_25-2020_05_25.csv
+!EURUSD-2020_05_25-2020_05_25.csv
+!XAUUSD-2020_05_25-2020_05_25.csv
