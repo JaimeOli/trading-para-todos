@@ -1,6 +1,6 @@
 import pandas as pd
 from datetime import date, timedelta, datetime
-from pathlib import Path
+import os
 
 class BacktestingDataframe:
     #Se usa yesterady como valor por defecto si no se da una fecha
@@ -27,7 +27,8 @@ class BacktestingDataframe:
             return date.strftime("{div}-%Y_%m_%d-%Y_%m_%d.csv").format(div = divisa)
 
         def add_default_data_path(csvstring):
-            return "{home}/trading/trading-para-todos/data/{csv}".format(home = str(Path.home()), csv = csvstring)
+            dir_path = os.path.dirname(os.path.realpath(__file__))
+            return "{home}/../../data/{csv}".format(home = dir_path, csv = csvstring)
 
         def readcsv(filename,sep):
             return pd.read_csv(filename, sep= sep, index_col=['time'],parse_dates=True)
