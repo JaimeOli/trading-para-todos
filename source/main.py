@@ -32,8 +32,11 @@ def main():
         dates = ["07-06-2020"]
         try:
             strategy = convert_to_strategy_type(args.strategy)
-        except(err):
-            print(err)
+        except Exception as ex:
+            template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+            message = template.format(type(ex).__name__, ex.args)
+            print(message)
+
         run_array_simulation(strategy,args.investment,args.comission,currencies,dates)
 
 def convert_to_strategy_type(string):
