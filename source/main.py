@@ -46,4 +46,6 @@ def convert_to_strategy_type(string):
         raise Exception ("Not strategy match found")
 
 if __name__ == '__main__':
+    import core.getdataviaduka as duka
+    duka.getdukadata()
     main()
