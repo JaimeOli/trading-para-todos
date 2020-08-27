@@ -2,6 +2,7 @@ import pandas as pd
 import numpy
 import talib
 import datetime
+from datetime import timedelta
 from itertools import tee, islice, chain
 
 def Dataframe(serie):
@@ -21,13 +22,23 @@ def CustomRSIdf(dfclose,timeperiod):
     custom = custom.rename('RSI')
     return custom.to_frame()
 
+def intindexposition(df,timestamp):
+    return df.index.get_loc(timestamp)
+
 # Analizar rangos de 40 valores ver cuales tienen “RSI (base 7) >70%”
-def RSImorethan70(dfrsi):
-    rsimore70 = dfrsi.query("RSI > 70")
+def RSImorethan(dfrsi,value):
+    if dfrsi.columns[0] == 'RSI(C,7)':
+        dfrsi = dfrsi.rename(columns={'RSI(C,7)':'RSI'})
+    rsimore70 = dfrsi.query("{} >= {}".format(dfrsi.columns[0],value))
+    #print("Mas de 70" + str(rsimore70))
     if len(rsimore70.index) > 0:
         return rsimore70
     else:
         return False
+
+def changersicolumnname(dfrsi):
+        if dfrsi.columns[0] == 'RSI(C,7)':
+            return dfrsi.rename(columns={'RSI(C,7)':'RSI'})
 
 def TopRSI70(dfrsi70):
     top70 =  []
@@ -49,7 +60,6 @@ def TopRSI70(dfrsi70):
                     top70.append(item)
                     index.append(dfrsi70.index[cnt])
         cnt = cnt + 1
-    print(cnt)
     return pd.DataFrame(top70,columns=['RSI'],index=index)
 
 def previous_and_next(some_iterable):
@@ -62,12 +72,20 @@ def top2rsivalues(dfrsi):
     dfm70 = RSImorethan70(dfrsi)
     return dfm70.nlargest(2,'RSI')
 
-def defineinitialCpoints(top2,data):
-    top2 = top2rsivalues(dfrsi)
-    if top2.index[0] < top2.index[1]:
-        return data
+def top2rsi70values(dfrsi70):
+    return dfrsi70.nlargest(2,'RSI')
+    
+def highestvalue(dfrsi):
+    return dfrsi.nlargest(1,'RSI')    
+
+def smallestvalue(dfrsi):
+    return dfrsi.nsmallest(1,'RSI')
+
+def definehighestrsi(top2):
+    if top2.values[0] > top2.values[1]:
+        return top2.index[0] 
     else:
-        return data
+        return top2.index[1]
 
 def diftime(time1,time2):
     difference = time1-time2
@@ -75,9 +93,25 @@ def diftime(time1,time2):
     difmin = divmod(difference.days * seconds_in_day + difference.seconds, 60)
     return difmin
 
+def addminutes(date,min):
+    return date + timedelta(minutes=min)  
+
+def datetimetostr(datetime):
+    return datetime.strftime("%Y-%m-%d %H:%M:%S")
+
 def changetendency(ant,up):
     if ant < up:
         return True
+    else:
+        return False
+
+def foundposibleC4(dfrsi,C2,C3):
+    if dfrsi.columns[0] == 'RSI(C,7)':
+        dfrsi = dfrsi.rename(columns={'RSI(C,7)':'RSI'})
+    posibleC4 = dfrsi.query("{} >= ({} - 0.5*{})/1.5 and {} <= ({} - 0.786*{})/1.5").format(dfrsi.columns[0],C2,C3,dfrsi.columns[0],C2,C3)
+    #print("Mas de 70" + str(rsimore70))
+    if len(posibleC4.index) > 0:
+        return posibleC4
     else:
         return False
 

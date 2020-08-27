@@ -2,6 +2,8 @@ import argparse
 from backtesting import Strategy
 from core.simulation import run_array_simulation
 from strategies.strategy import ThreeSma
+from strategies.doublestrategy import DoubletopDoublebottom
+from strategies.doublestrategyback import DoubletopDoublebottomBacktesting
 
 def main():
     #parser = argparse.ArgumentParser(description='Backtesting process to evaluate the efficency of forex strategies.')
@@ -29,7 +31,7 @@ def main():
     args = parser.parse_args()
     if args:
         currencies = ["XAUUSD","AUDUSD","NZDUSD","EURUSD","USDJPY","EURJPY","GBPUSD"]
-        dates = ["07-06-2020"]
+        dates = ["06-08-2020"]
         try:
             strategy = convert_to_strategy_type(args.strategy)
         except Exception as ex:
@@ -42,10 +44,14 @@ def main():
 def convert_to_strategy_type(string):
     if string == "ThreeSma":
         return ThreeSma
+    if string == "DoubleTopBack":
+        return DoubletopDoublebottomBacktesting
+    if string == "DoubleTop":
+        return DoubletopDoublebottom
     else:
         raise Exception ("Not strategy match found")
 
 if __name__ == '__main__':
     import core.getdataviaduka as duka
-    duka.getdukadata()
+    #duka.getdukadata()
     main()

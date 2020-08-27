@@ -16,14 +16,7 @@ class ThreeSma(SignalStrategy,TrailingStrategy):
         ma1 = self.ma1
         ma2 = self.ma2
         ma3 = self.ma3 
-
-        #Funcion para evaluar si un precio se encuentra del rango permitido con base en la poscion de apertura
-        def isinrange(self,price,pos_open):
-            if(price > pos_open + self.diff or price < pos_open + self.diff):
-                return True
-            else:
-                return False
-
+        
         if(not self.position and
            ma1[-1] < ma3[-1] and
            ma2[-1] < ma1[-1] and
