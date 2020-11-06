@@ -105,6 +105,14 @@ def changetendency(ant,up):
     else:
         return False
 
+def istopvalue(threesizearray):
+        if max(threesizearray[0]) == val:
+            return True
+        if min(threesizearray[0] == val):
+            return True 
+        return False
+    
+
 def foundposibleC4(dfrsi,C2,C3):
     if dfrsi.columns[0] == 'RSI(C,7)':
         dfrsi = dfrsi.rename(columns={'RSI(C,7)':'RSI'})

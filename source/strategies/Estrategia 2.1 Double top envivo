@@ -1,0 +1,60 @@
+Estrategia 2.1 Double top envivo
+
+Primer paso es encontrar un índice que sea pico máximo de RSI. Ese es el punto 1. 
+a) un valor de rsi es considerado pico cuando vale más de 65%
+a.1) Cuando se encuentra uno que sube de 65%, se verifica si el posterior es más grande. Si lo es, este toma el puesto de pico. Y si el posterior es igualmente más grande, ese toma el puesto de pico. 
+b) Las variables Close1 y High1 toman los valores de Close y de High de este índice.
+
+ segundo paso es encontrar el punto 2.
+Tiene que ser un valor pico máximo de RSI (+65%) separado de al menos 3 índices del punto 1 y en el rango de 50 valores a partir del punto 1
+Extraer los valores de Close de los picos de RSI encontrados para compararlos con Close1 de la siguiente manera:
+Si algun valor de Close de la lista previa coincide con esta condición: 
+H1>C2>C1
+			Se asocian los valores de este índice a las variables Close2, High2 y RSI2
+Idem solo que esta vez se tienen que cumplir dos condiciones
+H1>H2>C1
+C1>C2>C1*(1-k) (la variable k vale 0.020%) 
+
+
+
+# Tercer paso: Definir C3
+Entre esos dos valores más altos en el rango de 40, hay un valor mínimo. Ese es C3
+C3= lower close entre C1 y C2
+
+#Cuarto paso: Definir C4 
+C4 es el lower close después de C2, de manera que:
+Si C4[+1] es más bajo que C4, C4[+1] toma el valor C4. Para encontrar el fondo
+C4 tiene el RSI más bajo después de C2
+     
+# Quinto paso: Definir C5. 
+C5 da la pauta para vender en C6
+Open5	<C5 (Aseguramos que es una vela a la alza)
+C4+(0.618(C2-C4))<C5<C4+(0.886(C2-C4)) o
+0.382C4+0.618C2<C5<0.114C4+0.886C2
+iNTERVALO 2.0 con pito galáctico legendario
+C4+(0.5(C2-C4))<C5<C4+(0.886(C2-C4)) o
+0.5C4+0.5C2<C5<0.114C4+0.886C2
+iNTERVALO 3.0 con pito galáctico legendario
+C4+(0.382(C2-C4))<C5<C4+(0.886(C2-C4)) o
+0.618C4+0.382C2<C5<0.114C4+0.886C2
+
+Si C5[+1] es más alto que C5, C5[+1] toma el valor de C5
+RSI de C5 es < 65%
+Nota: también sería interesante ver la desviación estándar entre los valores de C3 y C5. 
+
+# Sexto paso: Definir C6.
+Se abre una posición de venta en Close 6. Se supone que desde C4 y hasta C5, el precio va subiendo. Es en C6 cuando el precio empezará a caer
+Si C6<C5 Vende
+
+# Septimo paso: Definir C7
+Cuando el valor actual de la posición es igual a C7, la posición se cierra.
+C7=C4+0.236(C2-C4)
+
+if the time :
+ the time in the dark
+ Dont forget the aspect of life;
+ and the the repestec
+ the tieme expecnty is equal to the amount of job requeride
+
+
+ Dont forget to get lose in the aspect of live
